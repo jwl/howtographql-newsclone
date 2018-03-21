@@ -1,0 +1,27 @@
+type Query {
+  # Retrieve a list ("feed") of link elements
+  feed(filter: String, skip: Int, first: Int): [Link!]!
+}
+
+type Mutation {
+  # Allow users to signup up with their name, email and password
+  signup(name: String!, email: String!, password: String!): AuthPayload!
+  # Users who signed up should be able to login again with their email and password
+  login(email: String!, password: String!): AuthPayload!
+  # Allow authenticated users to post new link elements
+  post(url: String!, description: String!): Link
+  # Allow authenticated users to upvote an existing link element
+  vote(linkId: ID!): Vote
+}
+
+type Subscription {
+  # Send realtime updates to subscribed clients when a new link element is created
+  newLink: LinkSubscriptionPayload
+  # Send realtime updates to subscribed clients when an existing link element is upvoted
+  newVote: VoteSubscriptionPayload
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
